@@ -16,9 +16,12 @@ Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.g
 # Sent to dstufft (upstream)
 Patch0:		0001-fix-for-http-bugs.python.org-issue17980-in-code-back.patch
 BuildRequires:	python-devel
+BuildRequires:	python-modules
 BuildRequires:	python-setuptools
+BuildRequires:	rpm-pythonprov
 %if %{with python3}
 BuildRequires:	python3-devel
+BuildRequires:	python3-modules
 BuildRequires:	python3-setuptools
 %endif
 Requires:	python-setuptools
