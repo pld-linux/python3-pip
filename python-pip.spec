@@ -7,7 +7,7 @@
 Summary:	A tool for installing and managing Python packages
 Name:		python-%{module}
 Version:	1.3.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Libraries
 URL:		http://www.pip-installer.org
