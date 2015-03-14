@@ -1,20 +1,20 @@
 #
 # Conditional build:
-%bcond_with	tests	# do not perform "make test"
 %bcond_without	python3 # CPython 3.x module
 
 %define 	module	pip
-Summary:	A tool for installing and managing Python packages
+Summary:	A tool for installing and managing Python 2 packages
+Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
 Version:	1.3.1
 Release:	2
 License:	MIT
 Group:		Development/Libraries
-URL:		http://www.pip-installer.org
 Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
 # Source0-md5:	cbb27a191cebc58997c4da8513863153
 # Sent to dstufft (upstream)
 Patch0:		0001-fix-for-http-bugs.python.org-issue17980-in-code-back.patch
+URL:		http://www.pip-installer.org/
 BuildRequires:	python-devel
 BuildRequires:	python-modules
 BuildRequires:	python-setuptools
@@ -33,8 +33,15 @@ Pip is a replacement for easy_install. It uses mostly the same
 techniques for finding packages, so packages that were made
 easy_installable should be pip-installable as well.
 
+%description -l pl.UTF-8
+Pip to zamiennik easy_install. Wykorzystuje w większości te same
+techniki do wyszukiwania pakietów, więc pakiety, które dało się
+zainstalować przez easy_install, powinny także dać się zainstalować
+przy użyciu pipa.
+
 %package -n python3-pip
-Summary:	A tool for installing and managing Python3 packages
+Summary:	A tool for installing and managing Python 3 packages
+Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 3
 Group:		Development/Libraries
 Requires:	python3-setuptools
 
@@ -42,6 +49,12 @@ Requires:	python3-setuptools
 Pip is a replacement for easy_install. It uses mostly the same
 techniques for finding packages, so packages that were made
 easy_installable should be pip-installable as well.
+
+%description -n python3-pip -l pl.UTF-8
+Pip to zamiennik easy_install. Wykorzystuje w większości te same
+techniki do wyszukiwania pakietów, więc pakiety, które dało się
+zainstalować przez easy_install, powinny także dać się zainstalować
+przy użyciu pipa.
 
 %prep
 %setup -q -n %{module}-%{version}
@@ -75,7 +88,7 @@ cd py3
 
 # Change the name of the python3 pip executable in order to not conflict with
 # the python2 executable
-mv $RPM_BUILD_ROOT%{_bindir}/pip $RPM_BUILD_ROOT%{__python}3-pip
+%{__mv} $RPM_BUILD_ROOT%{_bindir}/pip $RPM_BUILD_ROOT%{_bindir}/python3-pip
 
 # after changing the pip-python binary name, make a symlink to the old name,
 # that will be removed in a later version
@@ -102,7 +115,7 @@ cd -
 # The pip executable no longer needs to be renamed to avoid conflict with perl-pip
 # https://bugzilla.redhat.com/show_bug.cgi?id=958377
 # However, we'll keep a python-pip alias for now
-ln -s pip $RPM_BUILD_ROOT%{__python}-pip
+ln -s pip $RPM_BUILD_ROOT%{_bindir}/python-pip
 
 # after changing the pip-python binary name, make a symlink to the old name,
 # that will be removed in a later version
