@@ -1,27 +1,28 @@
 #
 # Conditional build:
 %bcond_without	python3 # CPython 3.x module
+%bcond_without	apidocs	# Sphinx documentation
 
 %define 	module	pip
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	1.3.1
-Release:	2
+Version:	6.0.8
+Release:	1
 License:	MIT
 Group:		Development/Libraries
+#Source0Download: https://pypi.python.org/pypi/pip
 Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
-# Source0-md5:	cbb27a191cebc58997c4da8513863153
-# Sent to dstufft (upstream)
-Patch0:		0001-fix-for-http-bugs.python.org-issue17980-in-code-back.patch
+# Source0-md5:	2332e6f97e75ded3bddde0ced01dbda3
 URL:		http://www.pip-installer.org/
-BuildRequires:	python-devel
-BuildRequires:	python-modules
+BuildRequires:	python-devel >= 1:2.6
+BuildRequires:	python-modules >= 1:2.6
 BuildRequires:	python-setuptools
 BuildRequires:	rpm-pythonprov
+%{?with_apidocs:BuildRequires:	sphinx-pdg}
 %if %{with python3}
-BuildRequires:	python3-devel
-BuildRequires:	python3-modules
+BuildRequires:	python3-devel >= 1:3.2
+BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-setuptools
 %endif
 Requires:	python-setuptools
@@ -56,10 +57,21 @@ techniki do wyszukiwania pakietów, więc pakiety, które dało się
 zainstalować przez easy_install, powinny także dać się zainstalować
 przy użyciu pipa.
 
+%package apidocs
+Summary:	Documentation for Python pip modules and installer
+Summary(pl.UTF-8):	Dokumentacja instalatora i modułów Pythona pip
+Group:		Documentation
+
+%description apidocs
+Documentation for Python pip modules and installer.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja instalatora i modułów Pythona pip.
+
 %prep
 %setup -q -n %{module}-%{version}
-%patch0 -p1
 
+# remove unneeded shebang
 %{__sed} -i '1d' pip/__init__.py
 
 %if %{with python3}
@@ -70,6 +82,10 @@ cp -a "$@" py3
 
 %build
 %{__python} setup.py build
+
+%if %{with apidocs}
+%{__make} -C docs html
+%endif
 
 %if %{with python3}
 cd py3
@@ -86,18 +102,11 @@ cd py3
 	--skip-build \
 	--root $RPM_BUILD_ROOT
 
-# Change the name of the python3 pip executable in order to not conflict with
-# the python2 executable
-%{__mv} $RPM_BUILD_ROOT%{_bindir}/pip $RPM_BUILD_ROOT%{_bindir}/python3-pip
+# remove pip3.x, keep just pip3
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/pip%{py3_ver}
 
-# after changing the pip-python binary name, make a symlink to the old name,
-# that will be removed in a later version
-# https://bugzilla.redhat.com/show_bug.cgi?id=855495
-ln -s python3-pip $RPM_BUILD_ROOT%{_bindir}/pip-python3
-
-# The install process creates both pip and pip-<python_abiversion> that seem to
-# be the same. Remove the extra script
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/pip-3*
+# RH compatibility
+ln -sf pip3 $RPM_BUILD_ROOT%{_bindir}/python3-pip
 cd -
 %endif
 
@@ -108,28 +117,20 @@ cd -
 
 %py_postclean
 
-# The install process creates both pip and pip-<python_abiversion> that seem to
-# be the same. Since removing pip-* also clobbers pip-python3, just remove pip-2*
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/pip-2*
+# remove pip2.x, keep just pip2
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/pip%{py_ver}
 
-# The pip executable no longer needs to be renamed to avoid conflict with perl-pip
-# https://bugzilla.redhat.com/show_bug.cgi?id=958377
-# However, we'll keep a python-pip alias for now
-ln -s pip $RPM_BUILD_ROOT%{_bindir}/python-pip
-
-# after changing the pip-python binary name, make a symlink to the old name,
-# that will be removed in a later version
-# https://bugzilla.redhat.com/show_bug.cgi?id=855495
-ln -s pip $RPM_BUILD_ROOT%{_bindir}/pip-python
+# RH compatibility
+ln -sf pip $RPM_BUILD_ROOT%{_bindir}/python-pip
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc docs/*
+%doc AUTHORS.txt CHANGES.txt LICENSE.txt README.rst
 %attr(755,root,root) %{_bindir}/pip
-%attr(755,root,root) %{_bindir}/pip-python
+%attr(755,root,root) %{_bindir}/pip2
 %attr(755,root,root) %{_bindir}/python-pip
 %{py_sitescriptdir}/pip-%{version}-py*.egg-info
 %{py_sitescriptdir}/pip
@@ -137,9 +138,15 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-pip
 %defattr(644,root,root,755)
-%doc docs/*
-%attr(755,root,root) %{_bindir}/pip-python3
+%doc AUTHORS.txt CHANGES.txt LICENSE.txt README.rst
+%attr(755,root,root) %{_bindir}/pip3
 %attr(755,root,root) %{_bindir}/python3-pip
 %{py3_sitescriptdir}/pip
 %{py3_sitescriptdir}/pip-%{version}-py*.egg-info
+%endif
+
+%if %{with apidocs}
+%files apidocs
+%defattr(644,root,root,755)
+%doc docs/_build/html/*
 %endif
