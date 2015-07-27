@@ -1,3 +1,9 @@
+# TODO
+# - can these be removed on linux?
+#   site-packages/pip/_vendor/distlib/t32.exe
+#   site-packages/pip/_vendor/distlib/t64.exe
+#   site-packages/pip/_vendor/distlib/w32.exe
+#   site-packages/pip/_vendor/distlib/w64.exe
 #
 # Conditional build:
 %bcond_without	python3 # CPython 3.x module
@@ -7,13 +13,13 @@
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	6.0.8
+Version:	7.1.0
 Release:	1
 License:	MIT
 Group:		Development/Libraries
-#Source0Download: https://pypi.python.org/pypi/pip
+# Source0Download: https://pypi.python.org/pypi/pip
 Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
-# Source0-md5:	2332e6f97e75ded3bddde0ced01dbda3
+# Source0-md5:	d935ee9146074b1d3f26c5f0acfd120e
 URL:		http://www.pip-installer.org/
 BuildRequires:	python-devel >= 1:2.6
 BuildRequires:	python-modules >= 1:2.6
