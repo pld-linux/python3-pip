@@ -20,7 +20,7 @@ Group:		Development/Libraries
 # Source0Download: https://pypi.python.org/pypi/pip
 Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
 # Source0-md5:	d935ee9146074b1d3f26c5f0acfd120e
-URL:		http://www.pip-installer.org/
+URL:		https://pip.pypa.io/
 BuildRequires:	python-devel >= 1:2.6
 BuildRequires:	python-modules >= 1:2.6
 BuildRequires:	python-setuptools
