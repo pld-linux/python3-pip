@@ -14,7 +14,7 @@ Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
 Version:	7.1.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Libraries
 # Source0Download: https://pypi.python.org/pypi/pip
