@@ -13,13 +13,13 @@
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	7.1.0
-Release:	3
+Version:	7.1.2
+Release:	1
 License:	MIT
 Group:		Development/Libraries
 # Source0Download: https://pypi.python.org/pypi/pip
 Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
-# Source0-md5:	d935ee9146074b1d3f26c5f0acfd120e
+# Source0-md5:	3823d2343d9f3aaab21cf9c917710196
 URL:		https://pip.pypa.io/
 BuildRequires:	python-devel >= 1:2.6
 BuildRequires:	python-modules >= 1:2.6
