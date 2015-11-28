@@ -8,7 +8,7 @@
 # Conditional build:
 %bcond_without	python2 # CPython 3.x module
 %bcond_without	python3 # CPython 3.x module
-%bcond_without	python3_default	# Use Python 3.x for easy_install executable
+%bcond_without	python3_default	# Use Python 3.x for pip executable
 %bcond_without	apidocs	# Sphinx documentation
 %bcond_with	tests	# do not perform tests (not included)
 
@@ -33,10 +33,10 @@ BuildRequires:	python-devel >= 1:2.6
 BuildRequires:	python-modules >= 1:2.6
 BuildRequires:	python-setuptools
 %if %{with tests}
-BuildRequires:	python-pytest
-BuildRequires:	python-virtualenv >= 1.10
-BuildRequires:	python-scripttest >= 1.3
 BuildRequires:	python-mock
+BuildRequires:	python-pytest
+BuildRequires:	python-scripttest >= 1.3
+BuildRequires:	python-virtualenv >= 1.10
 %endif
 %endif
 BuildRequires:	rpm-pythonprov
@@ -46,10 +46,10 @@ BuildRequires:	python3-devel >= 1:3.2
 BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-setuptools
 %if %{with tests}
-BuildRequires:	python3-pytest
-BuildRequires:	python3-virtualenv >= 1.10
-BuildRequires:	python3-scripttest >= 1.3
 BuildRequires:	python3-mock
+BuildRequires:	python3-pytest
+BuildRequires:	python3-scripttest >= 1.3
+BuildRequires:	python3-virtualenv >= 1.10
 %endif
 %endif
 Requires:	python-setuptools
@@ -156,9 +156,9 @@ ln -sf pip2 $RPM_BUILD_ROOT%{_bindir}/python-pip
 %endif
 
 %if %{with python3_default}
-ln -f $RPM_BUILD_ROOT/%{_bindir}/pip3 $RPM_BUILD_ROOT/%{_bindir}/pip
+ln -sf pip3 $RPM_BUILD_ROOT%{_bindir}/pip
 %else
-ln -f $RPM_BUILD_ROOT/%{_bindir}/pip2 $RPM_BUILD_ROOT/%{_bindir}/pip
+ln -sf pip2 $RPM_BUILD_ROOT%{_bindir}/pip
 %endif
 
 %clean
