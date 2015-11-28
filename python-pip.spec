@@ -8,15 +8,20 @@
 # Conditional build:
 %bcond_without	python2 # CPython 3.x module
 %bcond_without	python3 # CPython 3.x module
+%bcond_without	python3_default	# Use Python 3.x for easy_install executable
 %bcond_without	apidocs	# Sphinx documentation
 %bcond_with	tests	# do not perform tests (not included)
+
+%if %{without python3}
+%undefine	python3_default
+%endif
 
 %define 	module	pip
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
 Version:	7.1.2
-Release:	2
+Release:	3
 License:	MIT
 Group:		Development/Libraries
 # Source0Download: https://pypi.python.org/pypi/pip
@@ -79,6 +84,28 @@ techniki do wyszukiwania pakietów, więc pakiety, które dało się
 zainstalować przez easy_install, powinny także dać się zainstalować
 przy użyciu pipa.
 
+%package -n pip
+Summary:	A tool for installing and managing Python 3 packages
+Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 3
+Group:		Development/Libraries
+%if %{with python3_default}
+Requires:	python3-%{module} = %{version}-%{release}
+%else
+Requires:	python-%{module} = %{version}-%{release}
+%endif
+Conflicts:	%{name} < 7.1.2-3
+
+%description -n pip
+Pip is a replacement for easy_install. It uses mostly the same
+techniques for finding packages, so packages that were made
+easy_installable should be pip-installable as well.
+
+%description -n pip -l pl.UTF-8
+Pip to zamiennik easy_install. Wykorzystuje w większości te same
+techniki do wyszukiwania pakietów, więc pakiety, które dało się
+zainstalować przez easy_install, powinny także dać się zainstalować
+przy użyciu pipa.
+
 %package apidocs
 Summary:	Documentation for Python pip modules and installer
 Summary(pl.UTF-8):	Dokumentacja instalatora i modułów Pythona pip
@@ -128,6 +155,12 @@ ln -sf pip3 $RPM_BUILD_ROOT%{_bindir}/python3-pip
 ln -sf pip2 $RPM_BUILD_ROOT%{_bindir}/python-pip
 %endif
 
+%if %{with python3_default}
+ln -f $RPM_BUILD_ROOT/%{_bindir}/pip3 $RPM_BUILD_ROOT/%{_bindir}/pip
+%else
+ln -f $RPM_BUILD_ROOT/%{_bindir}/pip2 $RPM_BUILD_ROOT/%{_bindir}/pip
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -135,7 +168,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS.txt CHANGES.txt LICENSE.txt README.rst
-%attr(755,root,root) %{_bindir}/pip
 %attr(755,root,root) %{_bindir}/pip2
 %attr(755,root,root) %{_bindir}/pip2.*
 %attr(755,root,root) %{_bindir}/python-pip
@@ -153,6 +185,11 @@ rm -rf $RPM_BUILD_ROOT
 %{py3_sitescriptdir}/pip
 %{py3_sitescriptdir}/pip-%{version}-py*.egg-info
 %endif
+
+%files -n pip
+%defattr(644,root,root,755)
+%doc AUTHORS.txt CHANGES.txt LICENSE.txt README.rst
+%attr(755,root,root) %{_bindir}/pip
 
 %if %{with apidocs}
 %files apidocs
