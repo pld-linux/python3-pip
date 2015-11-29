@@ -28,6 +28,7 @@ Group:		Development/Libraries
 Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
 # Source0-md5:	3823d2343d9f3aaab21cf9c917710196
 URL:		https://pip.pypa.io/
+BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.6
 BuildRequires:	python-modules >= 1:2.6
