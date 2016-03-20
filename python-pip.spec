@@ -20,13 +20,13 @@
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	8.1.0
+Version:	8.1.1
 Release:	1
 License:	MIT
-Group:		Development/Libraries
-# Source0Download: https://pypi.python.org/pypi/pip
-Source0:	http://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
-# Source0-md5:	e9c3844db343f47d16040b32ad9072be
+Group:		Libraries/Python
+# Source0Download: https://pypi.python.org/simple/pip/
+Source0:	https://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
+# Source0-md5:	6b86f11841e89c8241d689956ba99ed7
 URL:		https://pip.pypa.io/
 BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
@@ -71,7 +71,7 @@ przy użyciu pipa.
 %package -n python3-pip
 Summary:	A tool for installing and managing Python 3 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 3
-Group:		Development/Libraries
+Group:		Libraries/Python
 Requires:	python3-setuptools
 
 %description -n python3-pip
@@ -88,7 +88,7 @@ przy użyciu pipa.
 %package -n pip
 Summary:	A tool for installing and managing Python 3 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 3
-Group:		Development/Libraries
+Group:		Development/Tools
 %if %{with python3_default}
 Requires:	python3-%{module} = %{version}-%{release}
 %else
