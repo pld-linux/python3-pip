@@ -6,11 +6,11 @@
 #   site-packages/pip/_vendor/distlib/w64.exe
 #
 # Conditional build:
-%bcond_without	python2 # CPython 3.x module
-%bcond_without	python3 # CPython 3.x module
+%bcond_without	python2		# CPython 3.x module
+%bcond_without	python3		# CPython 3.x module
 %bcond_without	python3_default	# Use Python 3.x for pip executable
-%bcond_without	apidocs	# Sphinx documentation
-%bcond_with	tests	# do not perform tests (not included)
+%bcond_without	apidocs		# Sphinx documentation
+%bcond_with	tests		# test target (not included)
 
 %if %{without python3}
 %undefine	python3_default
@@ -20,13 +20,13 @@
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	8.1.1
+Version:	8.1.2
 Release:	1
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
-Source0:	https://pypi.python.org/packages/source/p/pip/%{module}-%{version}.tar.gz
-# Source0-md5:	6b86f11841e89c8241d689956ba99ed7
+Source0:	https://pypi.python.org/packages/e7/a8/7556133689add8d1a54c0b14aeff0acb03c64707ce100ecd53934da1aa13/%{module}-%{version}.tar.gz
+# Source0-md5:	87083c0b9867963b29f7aba3613e8f4a
 URL:		https://pip.pypa.io/
 BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
