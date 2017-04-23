@@ -16,17 +16,18 @@
 %undefine	python3_default
 %endif
 
-%define 	module	pip
+%define 	module		pip
+%define		pypi_name	pip
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	8.1.2
-Release:	2
+Version:	9.0.1
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
-Source0:	https://pypi.python.org/packages/e7/a8/7556133689add8d1a54c0b14aeff0acb03c64707ce100ecd53934da1aa13/%{module}-%{version}.tar.gz
-# Source0-md5:	87083c0b9867963b29f7aba3613e8f4a
+Source0:	https://files.pythonhosted.org/packages/source/p/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+# Source0-md5:	35f01da33009719497f01a4ba69d63c9
 URL:		https://pip.pypa.io/
 BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
