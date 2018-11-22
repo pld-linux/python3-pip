@@ -140,14 +140,14 @@ mv python-docs-theme-2018.2 python-docs-theme
 %py_build %{?with_tests:test}
 %endif
 
-%if %{with apidocs}
-cd docs/html
-export PYTHONPATH=$(pwd)/../../build-2/lib; sphinx-build -b html . _build/html
-cd ../..
-%endif
-
 %if %{with python3}
 %py3_build %{?with_tests:test}
+%endif
+
+%if %{with apidocs}
+cd docs/html
+export PYTHONPATH=$(pwd)/../../build-2/lib:$(pwd)/../../build-3/lib; sphinx-build -b html . _build/html
+cd ../..
 %endif
 
 %install
