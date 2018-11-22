@@ -16,18 +16,25 @@
 %undefine	python3_default
 %endif
 
+%define		pypa_docs_theme_ver	d2e63fbfc62af3b7050f619b2f5bb8658985b931
+
 %define 	module		pip
 %define		pypi_name	pip
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	9.0.1
-Release:	2
+Version:	18.1
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
-Source0:	https://files.pythonhosted.org/packages/source/p/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	35f01da33009719497f01a4ba69d63c9
+Source0:	https://pypi.debian.net/pip/%{pypi_name}-%{version}.tar.gz
+# Source0-md5:	75cad449ad62c88b22de317a26781714
+Source2:        https://github.com/pypa/pypa-docs-theme/archive/%{pypa_docs_theme_ver}.tar.gz
+# Source2-md5:	0261c95dc4e8bbbba674a512747ee1af
+Source3:        https://github.com/python/python-docs-theme/archive/2018.2.tar.gz
+# Source3-md5:	cb78b4116f7456070d39db0a3c5db16c
+Patch0:		html_theme_path.patch
 URL:		https://pip.pypa.io/
 BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
@@ -121,9 +128,12 @@ Dokumentacja instalatora i modułów Pythona pip.
 
 %prep
 %setup -q -n %{module}-%{version}
-
-# remove unneeded shebang
-%{__sed} -i '1d' pip/__init__.py
+%patch0 -p1
+cd docs
+tar -xf %{SOURCE2}
+mv pypa-docs-theme-%{pypa_docs_theme_ver} pypa
+tar -xf %{SOURCE3}
+mv python-docs-theme-2018.2 python-docs-theme
 
 %build
 %if %{with python2}
@@ -131,7 +141,9 @@ Dokumentacja instalatora i modułów Pythona pip.
 %endif
 
 %if %{with apidocs}
-%{__make} -C docs html
+cd docs/html
+export PYTHONPATH=$(pwd)/../../build-2/lib; sphinx-build -b html . _build/html
+cd ../..
 %endif
 
 %if %{with python3}
@@ -169,7 +181,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS.txt CHANGES.txt LICENSE.txt README.rst
+%doc AUTHORS.txt LICENSE.txt README.rst
 %attr(755,root,root) %{_bindir}/pip2
 %attr(755,root,root) %{_bindir}/pip2.*
 %attr(755,root,root) %{_bindir}/python-pip
@@ -180,7 +192,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-pip
 %defattr(644,root,root,755)
-%doc AUTHORS.txt CHANGES.txt LICENSE.txt README.rst
+%doc AUTHORS.txt LICENSE.txt README.rst
 %attr(755,root,root) %{_bindir}/pip3
 %attr(755,root,root) %{_bindir}/pip3.*
 %attr(755,root,root) %{_bindir}/python3-pip
@@ -190,11 +202,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n pip
 %defattr(644,root,root,755)
-%doc AUTHORS.txt CHANGES.txt LICENSE.txt README.rst
+%doc AUTHORS.txt LICENSE.txt README.rst
 %attr(755,root,root) %{_bindir}/pip
 
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
-%doc docs/_build/html/*
+%doc docs/html/_build/html/*
 %endif

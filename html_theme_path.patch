@@ -1,0 +1,10 @@
+--- pip-18.1/docs/html/conf.py~	2018-09-07 04:20:49.000000000 +0200
++++ pip-18.1/docs/html/conf.py	2018-11-22 21:20:46.843223072 +0100
+@@ -135,6 +135,7 @@ extlinks = {
+ # The theme to use for HTML and HTML Help pages.  Major themes that come with
+ # Sphinx are currently 'default' and 'sphinxdoc'.
+ html_theme = "pypa_theme"
++html_theme_path = ["../pypa", "../python-docs-theme"]
+ 
+ # Theme options are theme-specific and customize the look and feel of a theme
+ # further.  For a list of options available for each theme, see the
