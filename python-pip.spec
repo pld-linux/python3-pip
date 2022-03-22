@@ -10,7 +10,7 @@
 %bcond_without	python3		# CPython 3.x module
 %bcond_without	python3_default	# Use Python 3.x for pip executable
 %bcond_without	apidocs		# Sphinx documentation
-%bcond_with	tests		# test target (not included)
+%bcond_with	tests		# test target (not included in sdist)
 
 %if %{without python3}
 %undefine	python3_default
@@ -23,23 +23,18 @@
 Summary:	A tool for installing and managing Python 2 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
-Version:	18.1
-Release:	3
+# keep 20.x here for python2 support
+Version:	20.3.4
+Release:	1
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
 Source0:	https://pypi.debian.net/pip/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	75cad449ad62c88b22de317a26781714
-Source2:        https://github.com/pypa/pypa-docs-theme/archive/%{pypa_docs_theme_ver}.tar.gz
-# Source2-md5:	0261c95dc4e8bbbba674a512747ee1af
-Source3:        https://github.com/python/python-docs-theme/archive/2018.2.tar.gz
-# Source3-md5:	cb78b4116f7456070d39db0a3c5db16c
-Patch0:		html_theme_path.patch
+# Source0-md5:	577a375b66ec109e0ac6a4c4aa99bbd0
 URL:		https://pip.pypa.io/
-BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
-BuildRequires:	python-devel >= 1:2.6
-BuildRequires:	python-modules >= 1:2.6
+BuildRequires:	python-devel >= 1:2.7
+BuildRequires:	python-modules >= 1:2.7
 BuildRequires:	python-setuptools
 %if %{with tests}
 BuildRequires:	python-mock
@@ -48,11 +43,9 @@ BuildRequires:	python-scripttest >= 1.3
 BuildRequires:	python-virtualenv >= 1.10
 %endif
 %endif
-BuildRequires:	rpm-pythonprov
-%{?with_apidocs:BuildRequires:	sphinx-pdg}
 %if %{with python3}
-BuildRequires:	python3-devel >= 1:3.2
-BuildRequires:	python3-modules >= 1:3.2
+BuildRequires:	python3-devel >= 1:3.5
+BuildRequires:	python3-modules >= 1:3.5
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-mock
@@ -60,6 +53,13 @@ BuildRequires:	python3-pytest
 BuildRequires:	python3-scripttest >= 1.3
 BuildRequires:	python3-virtualenv >= 1.10
 %endif
+%endif
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.714
+%if %{with apidocs}
+BuildRequires:	python3-furo
+BuildRequires:	python3-sphinx_inline_tabs
+BuildRequires:	sphinx-pdg-3
 %endif
 Requires:	python-setuptools
 BuildArch:	noarch
@@ -102,7 +102,7 @@ Requires:	python3-%{module} = %{version}-%{release}
 %else
 Requires:	python-%{module} = %{version}-%{release}
 %endif
-Conflicts:	%{name} < 7.1.2-3
+Conflicts:	python-pip < 7.1.2-3
 
 %description -n pip
 Pip is a replacement for easy_install. It uses mostly the same
@@ -128,12 +128,6 @@ Dokumentacja instalatora i modułów Pythona pip.
 
 %prep
 %setup -q -n %{module}-%{version}
-%patch0 -p1
-cd docs
-tar -xf %{SOURCE2}
-mv pypa-docs-theme-%{pypa_docs_theme_ver} pypa
-tar -xf %{SOURCE3}
-mv python-docs-theme-2018.2 python-docs-theme
 
 %build
 %if %{with python2}
@@ -145,9 +139,8 @@ mv python-docs-theme-2018.2 python-docs-theme
 %endif
 
 %if %{with apidocs}
-cd docs/html
-export PYTHONPATH=$(pwd)/../../build-2/lib:$(pwd)/../../build-3/lib; sphinx-build -b html . _build/html
-cd ../..
+PYTHONPATH=$(pwd)/src \
+sphinx-build-3 -b html docs/html docs/html/_build/html
 %endif
 
 %install
