@@ -25,7 +25,7 @@ Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 2
 Name:		python-%{module}
 # keep 20.x here for python2 support
 Version:	20.3.4
-Release:	3
+Release:	4
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
