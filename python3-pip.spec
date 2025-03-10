@@ -15,9 +15,9 @@
 %define		pypi_name	pip
 Summary:	A tool for installing and managing Python 3 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 3
-Name:		python-%{module}
+Name:		python3-%{module}
 Version:	25.0.1
-Release:	1
+Release:	1.1
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
