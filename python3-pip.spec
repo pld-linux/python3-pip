@@ -17,7 +17,7 @@ Summary:	A tool for installing and managing Python 3 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 3
 Name:		python3-%{module}
 Version:	25.0.1
-Release:	1.1
+Release:	
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
