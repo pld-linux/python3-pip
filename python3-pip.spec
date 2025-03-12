@@ -6,7 +6,7 @@
 #   site-packages/pip/_vendor/distlib/w64.exe
 #
 # Conditional build:
-%bcond_without	apidocs		# Sphinx documentation
+%bcond_with	apidocs		# Sphinx documentation (needs network?)
 %bcond_with	tests		# test target (not included in sdist)
 
 %ifarch x32
