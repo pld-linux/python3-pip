@@ -9,7 +9,9 @@
 %bcond_without	apidocs		# Sphinx documentation
 %bcond_with	tests		# test target (not included in sdist)
 
-%define		pypa_docs_theme_ver	d2e63fbfc62af3b7050f619b2f5bb8658985b931
+%ifarch x32
+%undefine with_apidocs
+%endif
 
 %define		module		pip
 %define		pypi_name	pip
@@ -39,7 +41,9 @@ BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with apidocs}
 BuildRequires:	python3-furo
+BuildRequires:	python3-sphinx_copybutton
 BuildRequires:	python3-sphinx_inline_tabs
+BuildRequires:	python3-sphinxcontrib-towncrier
 BuildRequires:	sphinx-pdg-3
 %endif
 Requires:	python3-setuptools
