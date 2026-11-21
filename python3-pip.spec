@@ -13,13 +13,13 @@
 Summary:	A tool for installing and managing Python 3 packages
 Summary(pl.UTF-8):	Narzędzie do instalowania i zarządzania pakietami Pythona 3
 Name:		python3-%{module}
-Version:	25.3
+Version:	26.3
 Release:	1
 License:	MIT
 Group:		Libraries/Python
 # Source0Download: https://pypi.python.org/simple/pip/
 Source0:	https://files.pythonhosted.org/packages/source/p/pip/%{module}-%{version}.tar.gz
-# Source0-md5:	31f52f428372020b80cd7518862fbbee
+# Source0-md5:	329592944207f872a94cb63da2b978f0
 URL:		https://pip.pypa.io/
 BuildRequires:	python3-devel >= 1:3.9
 BuildRequires:	python3-build
